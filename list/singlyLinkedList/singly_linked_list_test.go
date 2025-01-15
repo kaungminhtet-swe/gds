@@ -6,9 +6,12 @@ import (
 )
 
 func TestInsertAll(t *testing.T) {
+	instances := []int{10, 20, 30}
+
 	list := New[int]()
+	list.InsertAll(instances...)
 
-	list.InsertAll(10)
-
-	assert.Equal(t, 10, list.Len())
+	for index, value := range list.Iterate() {
+		assert.Equal(t, instances[index], value)
+	}
 }

@@ -22,13 +22,32 @@ func New[T comparable]() *SinglyLinkedList[T] {
 }
 
 func (l *SinglyLinkedList[T]) Iterate() iter.Seq2[int, T] {
-	//TODO implement me
-	panic("implement me")
+	index := -1
+	return func(yield func(index int, value T) bool) {
+		for l.head != nil {
+			index++
+			if !yield(index, l.head.value) {
+				break
+			}
+			l.head = l.head.next
+		}
+	}
 }
 
-func (l *SinglyLinkedList[T]) InsertAll(value T) {
-	//TODO implement me
-	panic("implement me")
+func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
+	for _, value := range values {
+		e := &Element[T]{value: value}
+
+		if l.isEmpty() {
+			l.head = e
+			l.tail = e
+		} else {
+			l.tail.next = e
+			l.tail = e
+		}
+
+		l.len++
+	}
 }
 
 func (l *SinglyLinkedList[T]) InsertList(list *list.List[T]) {
@@ -82,12 +101,15 @@ func (l *SinglyLinkedList[T]) GetIndex(index int) T {
 }
 
 func (l *SinglyLinkedList[T]) Len() int {
-	//TODO implement me
-	panic("implement me")
+	return l.len
 }
 
 func (l *SinglyLinkedList[T]) Init() {
 	l.tail = nil
 	l.head = nil
 	l.len = 0
+}
+
+func (l *SinglyLinkedList[T]) isEmpty() bool {
+	return l.head == nil && l.tail == nil
 }
