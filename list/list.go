@@ -18,8 +18,8 @@ type List[T comparable] interface {
 	RemoveBack()
 	RemoveIndex(index int)
 
-	Front() T
-	Back() T
+	Front() (T, error)
+	Back() (T, error)
 	GetIndex(index int) T
 
 	Len() int
