@@ -53,9 +53,19 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 
 func (l *SinglyLinkedList[T]) InsertList(lists *list.List[T]) {}
 
+// insert value at front of list, increment len
 func (l *SinglyLinkedList[T]) InsertFront(value T) {
-	//TODO implement me
-	panic("implement me")
+	e := &Element[T]{value: value}
+
+	if l.isEmpty() {
+		l.head = e
+		l.tail = e
+	} else {
+		e.next = l.head
+		l.head = e
+	}
+
+	l.incLen()
 }
 
 func (l *SinglyLinkedList[T]) InsertBack(value T) {
@@ -118,4 +128,12 @@ func (l *SinglyLinkedList[T]) Init() {
 
 func (l *SinglyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
+}
+
+func (l *SinglyLinkedList[T]) incLen() {
+	l.len++
+}
+
+func (l *SinglyLinkedList[T]) decLen() {
+	l.len--
 }
