@@ -148,3 +148,28 @@ func TestInsertIndex(t *testing.T) {
 		assert.Equal(t, "index out of range", err.Error())
 	})
 }
+
+func TestRemoveFront(t *testing.T) {
+	t.Run("Remove front value of empty list", func(t *testing.T) {
+		list := New[int]()
+
+		err := list.RemoveFront()
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Remover front value of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		err := list.RemoveFront()
+		assert.Nil(t, err)
+
+		result := []int{20, 30}
+		for i, value := range list.Iterate() {
+			assert.Equal(t, result[i], value)
+		}
+	})
+}

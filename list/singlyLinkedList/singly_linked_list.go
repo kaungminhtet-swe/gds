@@ -118,9 +118,12 @@ func (l *SinglyLinkedList[T]) InsertAtIndex(index int, value T) error {
 	return nil
 }
 
-func (l *SinglyLinkedList[T]) RemoveFront() {
-	//TODO implement me
-	panic("implement me")
+func (l *SinglyLinkedList[T]) RemoveFront() error {
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+	l.head = l.head.next
+	return nil
 }
 
 func (l *SinglyLinkedList[T]) RemoveBack() {
