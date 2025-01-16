@@ -22,6 +22,12 @@ func New[T comparable]() *SinglyLinkedList[T] {
 	return l
 }
 
+func (l *SinglyLinkedList[T]) Init() {
+	l.tail = nil
+	l.head = nil
+	l.len = 0
+}
+
 func (l *SinglyLinkedList[T]) Iterate() iter.Seq2[int, T] {
 	index := -1
 	return func(yield func(index int, value T) bool) {
@@ -152,12 +158,6 @@ func (l *SinglyLinkedList[T]) GetIndex(index int) T {
 
 func (l *SinglyLinkedList[T]) Len() int {
 	return l.len
-}
-
-func (l *SinglyLinkedList[T]) Init() {
-	l.tail = nil
-	l.head = nil
-	l.len = 0
 }
 
 func (l *SinglyLinkedList[T]) isEmpty() bool {
