@@ -83,7 +83,7 @@ func (l *SinglyLinkedList[T]) InsertBack(value T) {
 	l.incLen()
 }
 
-func (l *SinglyLinkedList[T]) InsertIndex(index int, value T) error {
+func (l *SinglyLinkedList[T]) InsertAtIndex(index int, value T) error {
 	if index == 0 {
 		l.InsertFront(value)
 		return nil
@@ -122,7 +122,7 @@ func (l *SinglyLinkedList[T]) RemoveBack() {
 	panic("implement me")
 }
 
-func (l *SinglyLinkedList[T]) RemoveIndex(index int) {
+func (l *SinglyLinkedList[T]) RemoveAtIndex(index int) error {
 	//TODO implement me
 	panic("implement me")
 }
