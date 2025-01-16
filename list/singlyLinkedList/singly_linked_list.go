@@ -1,6 +1,7 @@
 package singlyLinkedList
 
 import (
+	"errors"
 	"github.com/mg-kaung/gds/list"
 	"iter"
 )
@@ -50,10 +51,7 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 	}
 }
 
-func (l *SinglyLinkedList[T]) InsertList(list *list.List[T]) {
-	//TODO implement me
-	panic("implement me")
-}
+func (l *SinglyLinkedList[T]) InsertList(lists *list.List[T]) {}
 
 func (l *SinglyLinkedList[T]) InsertFront(value T) {
 	//TODO implement me
@@ -85,14 +83,22 @@ func (l *SinglyLinkedList[T]) RemoveIndex(index int) {
 	panic("implement me")
 }
 
-func (l *SinglyLinkedList[T]) Front() T {
-	//TODO implement me
-	panic("implement me")
+// Front returns the first value of list l or default nil value of type T if the list is empty.
+func (l *SinglyLinkedList[T]) Front() (T, error) {
+	if l.isEmpty() {
+		var t T
+		return t, errors.New("empty list")
+	}
+	return l.head.value, nil
 }
 
-func (l *SinglyLinkedList[T]) Back() T {
-	//TODO implement me
-	panic("implement me")
+// Back returns the last value of list l or default nil value of type T if the list is empty.
+func (l *SinglyLinkedList[T]) Back() (T, error) {
+	if l.isEmpty() {
+		var t T
+		return t, errors.New("empty list")
+	}
+	return l.tail.value, nil
 }
 
 func (l *SinglyLinkedList[T]) GetIndex(index int) T {
@@ -111,5 +117,5 @@ func (l *SinglyLinkedList[T]) Init() {
 }
 
 func (l *SinglyLinkedList[T]) isEmpty() bool {
-	return l.head == nil && l.tail == nil
+	return l.head == nil && l.tail == nil && l.len == 0
 }
