@@ -73,3 +73,78 @@ func TestInsertBack(t *testing.T) {
 
 	assert.Equal(t, length, list.Len(), "Length must equal ")
 }
+
+func TestInsertIndex(t *testing.T) {
+	t.Run("Inserting value at index 0 of empty list", func(t *testing.T) {
+		list := New[int]()
+		err := list.InsertIndex(0, 10)
+		assert.Nil(t, err)
+		assert.Equal(t, 1, list.Len(), "Length must equal")
+	})
+
+	t.Run("Inserting value at index 1 of empty list", func(t *testing.T) {
+		list := New[int]()
+		err := list.InsertIndex(1, 10)
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Inserting value at index 1 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		err := list.InsertIndex(1, 40)
+
+		assert.Nil(t, err)
+		assert.Equal(t, 4, list.Len(), "Length must equal 4")
+
+		results := []int{10, 40, 20, 30}
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at index 0 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		err := list.InsertIndex(0, 40)
+
+		assert.Nil(t, err)
+		assert.Equal(t, 4, list.Len(), "Length must equal 4")
+
+		results := []int{40, 10, 20, 30}
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at last index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		err := list.InsertIndex(list.Len(), 40)
+
+		assert.Nil(t, err)
+		assert.Equal(t, 4, list.Len(), "Length must equal 4")
+
+		results := []int{10, 20, 30, 40}
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at out of range index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		err := list.InsertIndex(4, 40)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of range", err.Error())
+	})
+}

@@ -83,9 +83,33 @@ func (l *SinglyLinkedList[T]) InsertBack(value T) {
 	l.incLen()
 }
 
-func (l *SinglyLinkedList[T]) InsertIndex(index int, value T) {
-	//TODO implement me
-	panic("implement me")
+func (l *SinglyLinkedList[T]) InsertIndex(index int, value T) error {
+	if index == 0 {
+		l.InsertFront(value)
+		return nil
+	}
+
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	if index < 0 || index > l.len {
+		return errors.New("index out of range")
+	}
+
+	var prev *Element[T]
+	for head := l.head; index >= 0; index-- {
+		if index == 0 {
+			e := &Element[T]{value: value}
+			e.next = head
+			prev.next = e
+			l.incLen()
+			return nil
+		}
+		prev = head
+		head = head.next
+	}
+	return nil
 }
 
 func (l *SinglyLinkedList[T]) RemoveFront() {
