@@ -145,8 +145,29 @@ func (l *SinglyLinkedList[T]) RemoveBack() error {
 }
 
 func (l *SinglyLinkedList[T]) RemoveAtIndex(index int) error {
-	//TODO implement me
-	panic("implement me")
+	if index == 0 {
+		return l.RemoveFront()
+	}
+
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	if index < 0 || index >= l.len {
+		return errors.New("index out of range")
+	}
+
+	var prev *Element[T]
+	for head := l.head; index >= 0; index-- {
+		if index == 0 {
+			prev.next = head.next
+			l.decLen()
+			return nil
+		}
+		prev = head
+		head = head.next
+	}
+	return nil
 }
 
 // Front returns the first value of list l or default nil value of type T if the list is empty.

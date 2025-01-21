@@ -202,3 +202,69 @@ func TestRemoveBack(t *testing.T) {
 	})
 
 }
+
+func TestRemoveAtIndex(t *testing.T) {
+	t.Run("Remove value at index 0 of empty list", func(t *testing.T) {
+		list := New[int]()
+
+		err := list.RemoveAtIndex(0)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Remove value at index 0 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		err := list.RemoveAtIndex(0)
+		assert.Nil(t, err)
+		assert.Equal(t, 3, list.Len(), "Length must equal 3")
+
+		result := []int{20, 30, 40}
+		for i, value := range list.Iterate() {
+			assert.Equal(t, result[i], value)
+		}
+	})
+
+	t.Run("Remove value at index 2 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		err := list.RemoveAtIndex(2)
+		assert.Nil(t, err)
+		assert.Equal(t, 3, list.Len(), "Length must equal 3")
+
+		result := []int{10, 20, 40}
+		for i, value := range list.Iterate() {
+			assert.Equal(t, result[i], value)
+		}
+	})
+
+	t.Run("Remove value at last index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		err := list.RemoveAtIndex(list.Len() - 1)
+		assert.Nil(t, err)
+		assert.Equal(t, 3, list.Len(), "Length must equal 3")
+
+		result := []int{10, 20, 30}
+		for i, value := range list.Iterate() {
+			assert.Equal(t, result[i], value)
+		}
+	})
+
+	t.Run("Remove value at out of range index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		err := list.RemoveAtIndex(4)
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of range", err.Error())
+	})
+}
