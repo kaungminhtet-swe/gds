@@ -268,3 +268,37 @@ func TestRemoveAtIndex(t *testing.T) {
 		assert.Equal(t, "index out of range", err.Error())
 	})
 }
+
+func TestGet(t *testing.T) {
+	t.Run("Get value at index 0 of empty list", func(t *testing.T) {
+		list := New[int]()
+		value, err := list.Get(0)
+		assert.Equal(t, "empty list", err.Error())
+		assert.Equal(t, 0, value)
+	})
+
+	t.Run("Get value out of range index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30}
+
+		list.InsertAll(instances...)
+		value, err := list.Get(4)
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of range", err.Error())
+		assert.Equal(t, 0, value)
+	})
+
+	t.Run("Get value at index 0 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		value, err := list.Get(0)
+		assert.Nil(t, err)
+		assert.Equal(t, 10, value)
+
+		value, err = list.Get(3)
+		assert.Nil(t, err)
+		assert.Equal(t, 40, value)
+	})
+}

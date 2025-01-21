@@ -58,7 +58,9 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 	}
 }
 
-func (l *SinglyLinkedList[T]) InsertList(lists *list.List[T]) {}
+func (l *SinglyLinkedList[T]) AppendList(lists *list.List[T]) {
+
+}
 
 // insert value at front of list, increment len
 func (l *SinglyLinkedList[T]) InsertFront(value T) {
@@ -188,9 +190,23 @@ func (l *SinglyLinkedList[T]) Back() (T, error) {
 	return l.tail.value, nil
 }
 
-func (l *SinglyLinkedList[T]) GetIndex(index int) T {
-	//TODO implement me
-	panic("implement me")
+func (l *SinglyLinkedList[T]) Get(index int) (T, error) {
+	var t T
+	if l.isEmpty() {
+		return t, errors.New("empty list")
+	}
+
+	if index < 0 || index >= l.len {
+		return t, errors.New("index out of range")
+	}
+
+	for i, value := range l.Iterate() {
+		if i == index {
+			t = value
+			break
+		}
+	}
+	return t, nil
 }
 
 func (l *SinglyLinkedList[T]) Len() int {
