@@ -20,7 +20,7 @@ type List[T comparable] interface {
 
 	Front() (T, error)
 	Back() (T, error)
-	GetIndex(index int) T
+	Get(index int) T
 
 	Len() int
 	Init()
