@@ -14,8 +14,8 @@ type List[T comparable] interface {
 	InsertBack(value T)
 	InsertAtIndex(index int, value T) error
 
-	RemoveFront()
-	RemoveBack()
+	RemoveFront() error
+	RemoveBack() error
 	RemoveAtIndex(index int) error
 
 	Front() (T, error)
