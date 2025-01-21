@@ -1,8 +1,9 @@
 package singlyLinkedList
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInsertAll(t *testing.T) {
@@ -166,10 +167,38 @@ func TestRemoveFront(t *testing.T) {
 		list.InsertAll(instances...)
 		err := list.RemoveFront()
 		assert.Nil(t, err)
+		assert.Equal(t, 2, list.Len(), "Length must equal 2")
 
 		result := []int{20, 30}
 		for i, value := range list.Iterate() {
 			assert.Equal(t, result[i], value)
 		}
 	})
+}
+
+func TestRemoveBack(t *testing.T) {
+	t.Run("Remove back value of empty list", func(t *testing.T) {
+		list := New[int]()
+
+		err := list.RemoveBack()
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Remover back value of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40}
+
+		list.InsertAll(instances...)
+		err := list.RemoveBack()
+		assert.Nil(t, err)
+		assert.Equal(t, 3, list.Len(), "Length must equal 3")
+
+		result := []int{10, 20, 30}
+		for i, value := range list.Iterate() {
+			assert.Equal(t, result[i], value)
+		}
+	})
+
 }

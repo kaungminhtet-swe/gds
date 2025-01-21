@@ -2,8 +2,9 @@ package singlyLinkedList
 
 import (
 	"errors"
-	"github.com/mg-kaung/gds/list"
 	"iter"
+
+	"github.com/mg-kaung/gds/list"
 )
 
 type Element[T comparable] struct {
@@ -123,12 +124,24 @@ func (l *SinglyLinkedList[T]) RemoveFront() error {
 		return errors.New("empty list")
 	}
 	l.head = l.head.next
+	l.decLen()
 	return nil
 }
 
-func (l *SinglyLinkedList[T]) RemoveBack() {
-	//TODO implement me
-	panic("implement me")
+func (l *SinglyLinkedList[T]) RemoveBack() error {
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	var prev *Element[T]
+	for head := l.head; head.next.next != nil; head = head.next {
+		prev = head
+	}
+
+	prev.next = nil
+	l.tail = prev
+	l.decLen()
+	return nil
 }
 
 func (l *SinglyLinkedList[T]) RemoveAtIndex(index int) error {
