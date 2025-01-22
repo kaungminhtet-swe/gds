@@ -302,15 +302,15 @@ func TestGet(t *testing.T) {
 }
 
 func TestAppend(t *testing.T) {
-
 	t.Run("Append non-empty list to empty list", func(t *testing.T) {
-		list := New[int]()
 		instances := []int{10, 20, 30, 40, 50, 60}
-		list.InsertAll(10, 20, 30, 40, 50, 60)
-		list2 := New[int]()
-		list2.Append(list)
+		list1 := New[int]()
+		list1.InsertAll(instances...)
 
-		assert.Equal(t, 6, list.Len())
+		list2 := New[int]()
+		list2.Append(list1)
+
+		assert.Equal(t, 6, list1.Len())
 		for i, value := range list2.Iterate() {
 			assert.Equal(t, instances[i], value)
 		}

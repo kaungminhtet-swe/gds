@@ -3,8 +3,6 @@ package singlyLinkedList
 import (
 	"errors"
 	"iter"
-
-	"github.com/mg-kaung/gds/list"
 )
 
 type Element[T comparable] struct {
@@ -59,18 +57,19 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 	}
 }
 
-func (l *SinglyLinkedList[T]) Append(values list.List[T]) {
-	tmp, ok := values.(*SinglyLinkedList[T])
-	if ok {
-		if l.isEmpty() {
-			*l = *tmp
-			return
-		}
-
-		l.tail.next = tmp.head
-		l.tail = tmp.tail
-		l.len += tmp.len
+func (l *SinglyLinkedList[T]) Append(values *SinglyLinkedList[T]) {
+	if values.isEmpty() {
+		return
 	}
+
+	if l.isEmpty() {
+		*l = *values
+		return
+	}
+
+	l.tail.next = values.head
+	l.tail = values.tail
+	l.len += values.len
 }
 
 // insert value at front of list, increment len

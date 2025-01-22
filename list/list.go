@@ -8,7 +8,6 @@ type List[T comparable] interface {
 	iterator.Iterator[T]
 
 	InsertAll(value ...T)
-	Append(values List[T])
 
 	InsertFront(value T)
 	InsertBack(value T)
