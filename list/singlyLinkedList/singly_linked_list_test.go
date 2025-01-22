@@ -7,7 +7,7 @@ import (
 )
 
 func TestInsertAll(t *testing.T) {
-	instances := []int{10, 20, 30}
+	instances := []int{10, 20, 30, 40, 50}
 
 	list := New[int]()
 	list.InsertAll(instances...)
@@ -288,17 +288,47 @@ func TestGet(t *testing.T) {
 		assert.Equal(t, 0, value)
 	})
 
-	t.Run("Get value at index 0 of non-empty list", func(t *testing.T) {
+	t.Run("Get value at range index of non-empty list", func(t *testing.T) {
 		list := New[int]()
 		instances := []int{10, 20, 30, 40}
-
 		list.InsertAll(instances...)
-		value, err := list.Get(0)
-		assert.Nil(t, err)
-		assert.Equal(t, 10, value)
 
-		value, err = list.Get(3)
-		assert.Nil(t, err)
-		assert.Equal(t, 40, value)
+		for i, ins := range instances {
+			value, err := list.Get(i)
+			assert.Nil(t, err)
+			assert.Equal(t, ins, value)
+		}
+	})
+}
+
+func TestAppend(t *testing.T) {
+
+	t.Run("Append non-empty list to empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40, 50, 60}
+		list.InsertAll(10, 20, 30, 40, 50, 60)
+		list2 := New[int]()
+		list2.Append(list)
+
+		assert.Equal(t, 6, list.Len())
+		for i, value := range list2.Iterate() {
+			assert.Equal(t, instances[i], value)
+		}
+	})
+
+	t.Run("Append non-empty list to non-empty list", func(t *testing.T) {
+		instances := []int{10, 20, 30, 40, 50, 60}
+		list1 := New[int]()
+		list1.InsertAll(10, 20, 30)
+
+		list2 := New[int]()
+		list2.InsertAll(40, 50, 60)
+
+		list1.Append(list2)
+		assert.Equal(t, 6, list1.Len())
+
+		for i, value := range list1.Iterate() {
+			assert.Equal(t, instances[i], value)
+		}
 	})
 }

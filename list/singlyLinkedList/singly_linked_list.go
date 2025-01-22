@@ -32,12 +32,13 @@ func (l *SinglyLinkedList[T]) Init() {
 func (l *SinglyLinkedList[T]) Iterate() iter.Seq2[int, T] {
 	index := -1
 	return func(yield func(index int, value T) bool) {
-		for l.head != nil {
+		head := l.head
+		for head != nil {
 			index++
-			if !yield(index, l.head.value) {
+			if !yield(index, head.value) {
 				break
 			}
-			l.head = l.head.next
+			head = head.next
 		}
 	}
 }
@@ -58,8 +59,18 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 	}
 }
 
-func (l *SinglyLinkedList[T]) AppendList(lists *list.List[T]) {
+func (l *SinglyLinkedList[T]) Append(values list.List[T]) {
+	tmp, ok := values.(*SinglyLinkedList[T])
+	if ok {
+		if l.isEmpty() {
+			*l = *tmp
+			return
+		}
 
+		l.tail.next = tmp.head
+		l.tail = tmp.tail
+		l.len += tmp.len
+	}
 }
 
 // insert value at front of list, increment len
