@@ -32,3 +32,18 @@ func TestInsertFront(t *testing.T) {
 
 	assert.Equal(t, length, list.Len(), "Length must equal ")
 }
+
+func TestInsertBack(t *testing.T) {
+	list := New[int]()
+	length := 10
+
+	for i := 0; i < length; i++ {
+		list.InsertBack(i)
+	}
+
+	for index, value := range list.Iterate() {
+		assert.Equal(t, index, value)
+	}
+
+	assert.Equal(t, length, list.Len(), "Length must equal ")
+}
