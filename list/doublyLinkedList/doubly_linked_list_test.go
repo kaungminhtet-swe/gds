@@ -47,3 +47,70 @@ func TestInsertBack(t *testing.T) {
 
 	assert.Equal(t, length, list.Len(), "Length must equal ")
 }
+
+func TestInsertIndex(t *testing.T) {
+	t.Run("Inserting value at index 0 of empty list", func(t *testing.T) {
+		list := New[int]()
+		err := list.InsertAtIndex(0, 10)
+		assert.Nil(t, err)
+		assert.Equal(t, 1, list.Len(), "Length must equal")
+	})
+
+	t.Run("Inserting value at index 1 of empty list", func(t *testing.T) {
+		list := New[int]()
+		err := list.InsertAtIndex(1, 10)
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Inserting value at index 0 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{25, 10, 20, 30, 40, 50}
+		list.InsertAll(instances...)
+		err := list.InsertAtIndex(0, 25)
+		assert.Nil(t, err)
+		assert.Equal(t, 6, list.Len(), "Length must equal")
+
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at index 1 of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{10, 25, 20, 30, 40, 50}
+		list.InsertAll(instances...)
+		err := list.InsertAtIndex(1, 25)
+		assert.Nil(t, err)
+		assert.Equal(t, 6, list.Len(), "Length must equal")
+
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at last index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{10, 20, 30, 40, 60, 50}
+		list.InsertAll(instances...)
+		err := list.InsertAtIndex(list.Len()-1, 60)
+		assert.Nil(t, err)
+		assert.Equal(t, 6, list.Len(), "Length must equal")
+
+		for index, value := range list.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Inserting value at out of range index of non-empty list", func(t *testing.T) {
+		list := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		list.InsertAll(instances...)
+		err := list.InsertAtIndex(5, 60)
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of range", err.Error())
+	})
+}

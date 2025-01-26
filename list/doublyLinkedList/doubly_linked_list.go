@@ -1,6 +1,9 @@
 package doublylinkedlist
 
-import "iter"
+import (
+	"errors"
+	"iter"
+)
 
 type Element[T comparable] struct {
 	value T
@@ -59,6 +62,35 @@ func (l *DoublyLinkedList[T]) InsertFront(value T) {
 	}
 
 	l.len++
+}
+
+func (l *DoublyLinkedList[T]) InsertAtIndex(index int, value T) error {
+	if index == 0 {
+		l.InsertFront(value)
+		return nil
+	}
+
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	if index < 0 || index >= l.Len() {
+		return errors.New("index out of range")
+	}
+
+	current := l.head
+	for ; index > 0; index-- {
+		current = current.next
+	}
+
+	e := &Element[T]{value: value}
+	current.prev.next = e
+	current.prev = e
+	e.next = current
+
+	l.len++
+
+	return nil
 }
 
 func (l *DoublyLinkedList[T]) InsertBack(value T) {
