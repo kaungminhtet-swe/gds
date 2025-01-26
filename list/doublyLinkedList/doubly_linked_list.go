@@ -42,18 +42,7 @@ func (l *DoublyLinkedList[T]) Iterate() iter.Seq2[int, T] {
 
 func (l *DoublyLinkedList[T]) InsertAll(values ...T) {
 	for _, v := range values {
-		e := &Element[T]{value: v}
-
-		if l.isEmpty() {
-			l.head = e
-			l.tail = e
-		} else {
-			e.prev = l.tail
-			l.tail.next = e
-			l.tail = e
-		}
-
-		l.len++
+		l.InsertBack(v)
 	}
 }
 
