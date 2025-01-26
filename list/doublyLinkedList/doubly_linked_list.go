@@ -57,6 +57,21 @@ func (l *DoublyLinkedList[T]) InsertAll(values ...T) {
 	}
 }
 
+func (l *DoublyLinkedList[T]) InsertFront(value T) {
+	e := &Element[T]{value: value}
+
+	if l.isEmpty() {
+		l.head = e
+		l.tail = e
+	} else {
+		e.next = l.head
+		l.head.prev = e
+		l.head = e
+	}
+
+	l.len++
+}
+
 func (l *DoublyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
 }
