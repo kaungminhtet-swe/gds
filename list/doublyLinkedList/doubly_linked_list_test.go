@@ -51,14 +51,14 @@ func TestInsertBack(t *testing.T) {
 func TestInsertIndex(t *testing.T) {
 	t.Run("Inserting value at index 0 of empty list", func(t *testing.T) {
 		list := New[int]()
-		err := list.InsertAtIndex(0, 10)
+		err := list.InsertAt(0, 10)
 		assert.Nil(t, err)
 		assert.Equal(t, 1, list.Len(), "Length must equal")
 	})
 
 	t.Run("Inserting value at index 1 of empty list", func(t *testing.T) {
 		list := New[int]()
-		err := list.InsertAtIndex(1, 10)
+		err := list.InsertAt(1, 10)
 		assert.NotNil(t, err)
 		assert.Equal(t, "empty list", err.Error())
 	})
@@ -68,7 +68,7 @@ func TestInsertIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{25, 10, 20, 30, 40, 50}
 		list.InsertAll(instances...)
-		err := list.InsertAtIndex(0, 25)
+		err := list.InsertAt(0, 25)
 		assert.Nil(t, err)
 		assert.Equal(t, 6, list.Len(), "Length must equal")
 
@@ -82,7 +82,7 @@ func TestInsertIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{10, 25, 20, 30, 40, 50}
 		list.InsertAll(instances...)
-		err := list.InsertAtIndex(1, 25)
+		err := list.InsertAt(1, 25)
 		assert.Nil(t, err)
 		assert.Equal(t, 6, list.Len(), "Length must equal")
 
@@ -96,7 +96,7 @@ func TestInsertIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{10, 20, 30, 40, 60, 50}
 		list.InsertAll(instances...)
-		err := list.InsertAtIndex(list.Len()-1, 60)
+		err := list.InsertAt(list.Len()-1, 60)
 		assert.Nil(t, err)
 		assert.Equal(t, 6, list.Len(), "Length must equal")
 
@@ -109,7 +109,7 @@ func TestInsertIndex(t *testing.T) {
 		list := New[int]()
 		instances := []int{10, 20, 30, 40, 50}
 		list.InsertAll(instances...)
-		err := list.InsertAtIndex(5, 60)
+		err := list.InsertAt(5, 60)
 		assert.NotNil(t, err)
 		assert.Equal(t, "index out of range", err.Error())
 	})
@@ -165,11 +165,11 @@ func TestRemoveBack(t *testing.T) {
 	})
 }
 
-func TestRemoveAtIndex(t *testing.T) {
+func TestRemoveAt(t *testing.T) {
 	t.Run("Remove element at index 0 of empty list", func(t *testing.T) {
 		t.Parallel()
 		l := New[int]()
-		err := l.RemoveAtIndex(0)
+		err := l.RemoveAt(0)
 		assert.NotNil(t, err)
 		assert.Equal(t, "empty list", err.Error())
 	})
@@ -180,7 +180,7 @@ func TestRemoveAtIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{20, 30, 40, 50}
 		l.InsertAll(instances...)
-		err := l.RemoveAtIndex(0)
+		err := l.RemoveAt(0)
 		assert.Nil(t, err)
 		assert.Equal(t, 4, l.Len(), "Length must equal 4")
 
@@ -195,7 +195,7 @@ func TestRemoveAtIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{10, 20, 40, 50}
 		l.InsertAll(instances...)
-		err := l.RemoveAtIndex(2)
+		err := l.RemoveAt(2)
 		assert.Nil(t, err)
 		assert.Equal(t, 4, l.Len(), "Length must equal 4")
 
@@ -210,7 +210,7 @@ func TestRemoveAtIndex(t *testing.T) {
 		instances := []int{10, 20, 30, 40, 50}
 		results := []int{10, 20, 30, 40}
 		l.InsertAll(instances...)
-		err := l.RemoveAtIndex(4)
+		err := l.RemoveAt(4)
 		assert.Nil(t, err)
 		assert.Equal(t, 4, l.Len(), "Length must equal 4")
 
@@ -224,7 +224,7 @@ func TestRemoveAtIndex(t *testing.T) {
 		l := New[int]()
 		instances := []int{10, 20, 30, 40, 50}
 		l.InsertAll(instances...)
-		err := l.RemoveAtIndex(5)
+		err := l.RemoveAt(5)
 		assert.NotNil(t, err)
 		assert.Equal(t, "index out of bounds", err.Error())
 	})

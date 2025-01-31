@@ -64,7 +64,7 @@ func (l *DoublyLinkedList[T]) InsertFront(value T) {
 	l.len++
 }
 
-func (l *DoublyLinkedList[T]) InsertAtIndex(index int, value T) error {
+func (l *DoublyLinkedList[T]) InsertAt(index int, value T) error {
 	if index == 0 {
 		l.InsertFront(value)
 		return nil
@@ -132,7 +132,7 @@ func (l *DoublyLinkedList[T]) RemoveBack() error {
 	return nil
 }
 
-func (l *DoublyLinkedList[T]) RemoveAtIndex(index int) error {
+func (l *DoublyLinkedList[T]) RemoveAt(index int) error {
 	if l.isEmpty() {
 		return errors.New("empty list")
 	}
