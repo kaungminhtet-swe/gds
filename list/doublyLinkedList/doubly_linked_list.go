@@ -132,6 +132,35 @@ func (l *DoublyLinkedList[T]) RemoveBack() error {
 	return nil
 }
 
+func (l *DoublyLinkedList[T]) RemoveAtIndex(index int) error {
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	if index < 0 || index >= l.len {
+		return errors.New("index out of bounds")
+	}
+
+	if index == 0 {
+		return l.RemoveFront()
+	}
+
+	if index == l.len-1 {
+		return l.RemoveBack()
+	}
+
+	current := l.head
+	for ; index > 0; index-- {
+		current = current.next
+	}
+
+	current.prev.next = current.next
+	current.next.prev = current.prev
+	l.len--
+
+	return nil
+}
+
 func (l *DoublyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
 }

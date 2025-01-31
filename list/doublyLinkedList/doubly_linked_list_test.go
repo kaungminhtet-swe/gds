@@ -164,3 +164,68 @@ func TestRemoveBack(t *testing.T) {
 		}
 	})
 }
+
+func TestRemoveAtIndex(t *testing.T) {
+	t.Run("Remove element at index 0 of empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		err := l.RemoveAtIndex(0)
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Remove element at index 0 of non-empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{20, 30, 40, 50}
+		l.InsertAll(instances...)
+		err := l.RemoveAtIndex(0)
+		assert.Nil(t, err)
+		assert.Equal(t, 4, l.Len(), "Length must equal 4")
+
+		for index, value := range l.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Remove element at middle index of non-empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{10, 20, 40, 50}
+		l.InsertAll(instances...)
+		err := l.RemoveAtIndex(2)
+		assert.Nil(t, err)
+		assert.Equal(t, 4, l.Len(), "Length must equal 4")
+
+		for index, value := range l.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Remove element at last index of non-empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{10, 20, 30, 40}
+		l.InsertAll(instances...)
+		err := l.RemoveAtIndex(4)
+		assert.Nil(t, err)
+		assert.Equal(t, 4, l.Len(), "Length must equal 4")
+
+		for index, value := range l.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+
+	t.Run("Remove element at index that is out of bounds of non-empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		l.InsertAll(instances...)
+		err := l.RemoveAtIndex(5)
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of bounds", err.Error())
+	})
+}
