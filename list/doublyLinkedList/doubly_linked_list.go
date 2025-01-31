@@ -108,6 +108,18 @@ func (l *DoublyLinkedList[T]) InsertBack(value T) {
 	l.len++
 }
 
+func (l *DoublyLinkedList[T]) RemoveFront() error {
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
+	l.head = l.head.next
+	l.head.prev = nil
+	l.len--
+
+	return nil
+}
+
 func (l *DoublyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
 }
