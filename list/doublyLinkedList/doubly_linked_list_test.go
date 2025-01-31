@@ -139,3 +139,28 @@ func TestRemoveFront(t *testing.T) {
 		}
 	})
 }
+
+func TestRemoveBack(t *testing.T) {
+	t.Run("Remove last element of empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		err := l.RemoveBack()
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Remove last element of non-empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		results := []int{10, 20, 30, 40}
+		l.InsertAll(instances...)
+		err := l.RemoveBack()
+		assert.Nil(t, err)
+		assert.Equal(t, 4, l.Len(), "Length must equal 4")
+
+		for index, value := range l.Iterate() {
+			assert.Equal(t, results[index], value)
+		}
+	})
+}
