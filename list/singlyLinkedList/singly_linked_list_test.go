@@ -138,7 +138,7 @@ func TestInsertIndex(t *testing.T) {
 		}
 	})
 
-	t.Run("Inserting value at out of range index of non-empty list", func(t *testing.T) {
+	t.Run("Inserting value at out of bounds index of non-empty list", func(t *testing.T) {
 		list := New[int]()
 		instances := []int{10, 20, 30}
 
@@ -146,7 +146,7 @@ func TestInsertIndex(t *testing.T) {
 		err := list.InsertAt(4, 40)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "index out of range", err.Error())
+		assert.Equal(t, "index out of bounds", err.Error())
 	})
 }
 
@@ -258,14 +258,14 @@ func TestRemoveAt(t *testing.T) {
 		}
 	})
 
-	t.Run("Remove value at out of range index of non-empty list", func(t *testing.T) {
+	t.Run("Remove value at out of bounds index of non-empty list", func(t *testing.T) {
 		list := New[int]()
 		instances := []int{10, 20, 30, 40}
 
 		list.InsertAll(instances...)
 		err := list.RemoveAt(4)
 		assert.NotNil(t, err)
-		assert.Equal(t, "index out of range", err.Error())
+		assert.Equal(t, "index out of bounds", err.Error())
 	})
 }
 
@@ -277,14 +277,14 @@ func TestGet(t *testing.T) {
 		assert.Equal(t, 0, value)
 	})
 
-	t.Run("Get value out of range index of non-empty list", func(t *testing.T) {
+	t.Run("Get value out of bounds index of non-empty list", func(t *testing.T) {
 		list := New[int]()
 		instances := []int{10, 20, 30}
 
 		list.InsertAll(instances...)
 		value, err := list.Get(4)
 		assert.NotNil(t, err)
-		assert.Equal(t, "index out of range", err.Error())
+		assert.Equal(t, "index out of bounds", err.Error())
 		assert.Equal(t, 0, value)
 	})
 

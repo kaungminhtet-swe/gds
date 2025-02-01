@@ -53,7 +53,7 @@ func (l *SinglyLinkedList[T]) InsertAll(values ...T) {
 			l.tail = e
 		}
 
-		l.len++
+		l.incLen()
 	}
 }
 
@@ -113,7 +113,7 @@ func (l *SinglyLinkedList[T]) InsertAt(index int, value T) error {
 	}
 
 	if index < 0 || index > l.len {
-		return errors.New("index out of range")
+		return errors.New("index out of bounds")
 	}
 
 	var prev *Element[T]
@@ -166,7 +166,7 @@ func (l *SinglyLinkedList[T]) RemoveAt(index int) error {
 	}
 
 	if index < 0 || index >= l.len {
-		return errors.New("index out of range")
+		return errors.New("index out of bounds")
 	}
 
 	var prev *Element[T]
@@ -185,8 +185,8 @@ func (l *SinglyLinkedList[T]) RemoveAt(index int) error {
 // Front returns the first value of list l or default nil value of type T if the list is empty.
 func (l *SinglyLinkedList[T]) Front() (T, error) {
 	if l.isEmpty() {
-		var t T
-		return t, errors.New("empty list")
+		var zero T
+		return zero, errors.New("empty list")
 	}
 	return l.head.value, nil
 }
@@ -194,29 +194,30 @@ func (l *SinglyLinkedList[T]) Front() (T, error) {
 // Back returns the last value of list l or default nil value of type T if the list is empty.
 func (l *SinglyLinkedList[T]) Back() (T, error) {
 	if l.isEmpty() {
-		var t T
-		return t, errors.New("empty list")
+		var zero T
+		return zero, errors.New("empty list")
 	}
 	return l.tail.value, nil
 }
 
 func (l *SinglyLinkedList[T]) Get(index int) (T, error) {
-	var t T
+	var result T
 	if l.isEmpty() {
-		return t, errors.New("empty list")
+		return result, errors.New("empty list")
 	}
 
 	if index < 0 || index >= l.len {
-		return t, errors.New("index out of range")
+		return result, errors.New("index out of bounds")
 	}
 
-	for i, value := range l.Iterate() {
+	for i, e := range l.Iterate() {
 		if i == index {
-			t = value
+			result = e
 			break
 		}
 	}
-	return t, nil
+
+	return result, nil
 }
 
 func (l *SinglyLinkedList[T]) Len() int {
