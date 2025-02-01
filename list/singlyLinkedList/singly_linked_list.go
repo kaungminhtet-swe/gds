@@ -103,13 +103,13 @@ func (l *SinglyLinkedList[T]) InsertBack(value T) {
 }
 
 func (l *SinglyLinkedList[T]) InsertAt(index int, value T) error {
+	if l.isEmpty() {
+		return errors.New("empty list")
+	}
+
 	if index == 0 {
 		l.InsertFront(value)
 		return nil
-	}
-
-	if l.isEmpty() {
-		return errors.New("empty list")
 	}
 
 	if index < 0 || index > l.len {

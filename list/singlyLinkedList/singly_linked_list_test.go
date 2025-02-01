@@ -1,6 +1,7 @@
 package singlyLinkedList
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -75,79 +76,76 @@ func TestInsertBack(t *testing.T) {
 	assert.Equal(t, length, list.Len(), "Length must equal ")
 }
 
-func TestInsertIndex(t *testing.T) {
-	t.Run("Inserting value at index 0 of empty list", func(t *testing.T) {
-		list := New[int]()
-		err := list.InsertAt(0, 10)
-		assert.Nil(t, err)
-		assert.Equal(t, 1, list.Len(), "Length must equal")
-	})
+func TestInsertAt(t *testing.T) {
+	testcases := []struct {
+		name      string
+		instances []int
+		result    []int
+		value     int
+		index     int
+		wantedErr error
+	}{
+		{
+			"Inserting value at index 0 of empty list",
+			[]int{},
+			[]int{},
+			10,
+			0,
+			errors.New("empty list"),
+		},
+		{
+			"Inserting value at index 0 of non-empty list",
+			[]int{20, 30, 40},
+			[]int{10, 20, 30, 40},
+			10,
+			0,
+			nil,
+		},
+		{
+			"Inserting value in the middle of non-empty list",
+			[]int{10, 20, 30},
+			[]int{10, 40, 20, 30},
+			40,
+			1,
+			nil,
+		},
+		{
+			"Inserting value at last index of non-empty list",
+			[]int{10, 20, 30},
+			[]int{10, 20, 40, 30},
+			40,
+			2,
+			nil,
+		},
+		{
+			"Inserting value at out of bounds index of non-empty list",
+			[]int{10, 20, 30},
+			[]int{},
+			40,
+			4,
+			errors.New("index out of bounds"),
+		},
+	}
 
-	t.Run("Inserting value at index 1 of empty list", func(t *testing.T) {
-		list := New[int]()
-		err := list.InsertAt(1, 10)
-		assert.NotNil(t, err)
-		assert.Equal(t, "empty list", err.Error())
-	})
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			list := New[int]()
+			if len(tc.instances) > 0 {
+				list.InsertAll(tc.instances...)
+			}
+			err := list.InsertAt(tc.index, tc.value)
 
-	t.Run("Inserting value at index 1 of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30}
-
-		list.InsertAll(instances...)
-		err := list.InsertAt(1, 40)
-
-		assert.Nil(t, err)
-		assert.Equal(t, 4, list.Len(), "Length must equal 4")
-
-		results := []int{10, 40, 20, 30}
-		for index, value := range list.Iterate() {
-			assert.Equal(t, results[index], value)
-		}
-	})
-
-	t.Run("Inserting value at index 0 of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30}
-
-		list.InsertAll(instances...)
-		err := list.InsertAt(0, 40)
-
-		assert.Nil(t, err)
-		assert.Equal(t, 4, list.Len(), "Length must equal 4")
-
-		results := []int{40, 10, 20, 30}
-		for index, value := range list.Iterate() {
-			assert.Equal(t, results[index], value)
-		}
-	})
-
-	t.Run("Inserting value at last index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30}
-
-		list.InsertAll(instances...)
-		err := list.InsertAt(list.Len(), 40)
-
-		assert.Nil(t, err)
-		assert.Equal(t, 4, list.Len(), "Length must equal 4")
-
-		results := []int{10, 20, 30, 40}
-		for index, value := range list.Iterate() {
-			assert.Equal(t, results[index], value)
-		}
-	})
-
-	t.Run("Inserting value at out of bounds index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30}
-
-		list.InsertAll(instances...)
-		err := list.InsertAt(4, 40)
-
-		assert.NotNil(t, err)
-		assert.Equal(t, "index out of bounds", err.Error())
-	})
+			if tc.wantedErr != nil {
+				assert.Equal(t, tc.wantedErr.Error(), err.Error())
+			} else {
+				for i, value := range list.Iterate() {
+					assert.Equal(t, tc.result[i], value)
+				}
+				assert.Equal(t, len(tc.result), list.Len())
+			}
+		})
+	}
 }
 
 func TestRemoveFront(t *testing.T) {
@@ -204,101 +202,128 @@ func TestRemoveBack(t *testing.T) {
 }
 
 func TestRemoveAt(t *testing.T) {
-	t.Run("Remove value at index 0 of empty list", func(t *testing.T) {
-		list := New[int]()
+	testcases := []struct {
+		name      string
+		instances []int
+		result    []int
+		index     int
+		wantedErr error
+	}{
+		{
+			name:      "Remove first value of empty list",
+			instances: []int{},
+			index:     0,
+			result:    []int{},
+			wantedErr: errors.New("empty list"),
+		},
+		{
+			name:      "Remove first value of non-empty list",
+			instances: []int{10, 20, 30, 40, 50},
+			index:     0,
+			result:    []int{20, 30, 40, 50},
+			wantedErr: nil,
+		},
+		{
+			name:      "Remove middle value of non-empty list",
+			instances: []int{10, 20, 30, 40, 50},
+			index:     2,
+			result:    []int{10, 20, 40, 50},
+			wantedErr: nil,
+		},
+		{
+			name:      "Remove last value of non-empty list",
+			instances: []int{10, 20, 30, 40, 50},
+			index:     4,
+			result:    []int{10, 20, 30, 40},
+			wantedErr: nil,
+		},
+		{
+			name:      "Remove out of bounds value of non-empty list",
+			instances: []int{10, 20, 30, 40, 50},
+			index:     5,
+			result:    []int{},
+			wantedErr: errors.New("index out of bounds"),
+		},
+	}
 
-		err := list.RemoveAt(0)
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			list := New[int]()
+			list.InsertAll(tc.instances...)
+			err := list.RemoveAt(tc.index)
 
-		assert.NotNil(t, err)
-		assert.Equal(t, "empty list", err.Error())
-	})
-
-	t.Run("Remove value at index 0 of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30, 40}
-
-		list.InsertAll(instances...)
-		err := list.RemoveAt(0)
-		assert.Nil(t, err)
-		assert.Equal(t, 3, list.Len(), "Length must equal 3")
-
-		result := []int{20, 30, 40}
-		for i, value := range list.Iterate() {
-			assert.Equal(t, result[i], value)
-		}
-	})
-
-	t.Run("Remove value at index 2 of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30, 40}
-
-		list.InsertAll(instances...)
-		err := list.RemoveAt(2)
-		assert.Nil(t, err)
-		assert.Equal(t, 3, list.Len(), "Length must equal 3")
-
-		result := []int{10, 20, 40}
-		for i, value := range list.Iterate() {
-			assert.Equal(t, result[i], value)
-		}
-	})
-
-	t.Run("Remove value at last index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30, 40}
-
-		list.InsertAll(instances...)
-		err := list.RemoveAt(list.Len() - 1)
-		assert.Nil(t, err)
-		assert.Equal(t, 3, list.Len(), "Length must equal 3")
-
-		result := []int{10, 20, 30}
-		for i, value := range list.Iterate() {
-			assert.Equal(t, result[i], value)
-		}
-	})
-
-	t.Run("Remove value at out of bounds index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30, 40}
-
-		list.InsertAll(instances...)
-		err := list.RemoveAt(4)
-		assert.NotNil(t, err)
-		assert.Equal(t, "index out of bounds", err.Error())
-	})
+			if tc.wantedErr != nil {
+				assert.Equal(t, tc.wantedErr.Error(), err.Error())
+			} else {
+				for i, value := range list.Iterate() {
+					assert.Equal(t, tc.result[i], value)
+				}
+				assert.Equal(t, len(tc.result), list.Len())
+			}
+		})
+	}
 }
 
 func TestGet(t *testing.T) {
-	t.Run("Get value at index 0 of empty list", func(t *testing.T) {
-		list := New[int]()
-		value, err := list.Get(0)
-		assert.Equal(t, "empty list", err.Error())
-		assert.Equal(t, 0, value)
-	})
+	testcases := []struct {
+		name      string
+		instances []int
+		index     int
+		result    int
+		wantedErr error
+	}{
+		{
+			name:      "Get value at index 0 of empty list",
+			instances: []int{},
+			index:     0,
+			result:    0,
+			wantedErr: errors.New("empty list"),
+		},
+		{
+			name:      "Get value out of bounds index of non-empty list",
+			instances: []int{10, 20, 30},
+			index:     4,
+			result:    0,
+			wantedErr: errors.New("index out of bounds"),
+		},
+		{
+			name:      "Get frist of non-empty list",
+			instances: []int{10, 20, 30, 40},
+			index:     0,
+			result:    10,
+			wantedErr: nil,
+		},
+		{
+			name:      "Get last value of non-empty list",
+			instances: []int{10, 20, 30, 40},
+			index:     3,
+			result:    40,
+			wantedErr: nil,
+		},
+		{
+			name:      "Get middle value of non-empty",
+			instances: []int{10, 20, 30, 40},
+			index:     2,
+			result:    30,
+			wantedErr: nil,
+		},
+	}
 
-	t.Run("Get value out of bounds index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30}
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			list := New[int]()
+			list.InsertAll(tc.instances...)
 
-		list.InsertAll(instances...)
-		value, err := list.Get(4)
-		assert.NotNil(t, err)
-		assert.Equal(t, "index out of bounds", err.Error())
-		assert.Equal(t, 0, value)
-	})
-
-	t.Run("Get value at range index of non-empty list", func(t *testing.T) {
-		list := New[int]()
-		instances := []int{10, 20, 30, 40}
-		list.InsertAll(instances...)
-
-		for i, ins := range instances {
-			value, err := list.Get(i)
-			assert.Nil(t, err)
-			assert.Equal(t, ins, value)
-		}
-	})
+			value, err := list.Get(tc.index)
+			if tc.wantedErr != nil {
+				assert.Equal(t, tc.wantedErr.Error(), err.Error())
+			} else {
+				assert.Equal(t, tc.result, value)
+			}
+		})
+	}
 }
 
 func TestAppend(t *testing.T) {
@@ -317,7 +342,7 @@ func TestAppend(t *testing.T) {
 	})
 
 	t.Run("Append non-empty list to non-empty list", func(t *testing.T) {
-		instances := []int{10, 20, 30, 40, 50, 60}
+		results := []int{10, 20, 30, 40, 50, 60}
 		list1 := New[int]()
 		list1.InsertAll(10, 20, 30)
 
@@ -328,7 +353,7 @@ func TestAppend(t *testing.T) {
 		assert.Equal(t, 6, list1.Len())
 
 		for i, value := range list1.Iterate() {
-			assert.Equal(t, instances[i], value)
+			assert.Equal(t, results[i], value)
 		}
 	})
 }
