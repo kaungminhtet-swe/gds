@@ -302,3 +302,52 @@ func TestBack(t *testing.T) {
 		}
 	}
 }
+
+func TestGet(t *testing.T) {
+	t.Run("Get element at index 0 of empty list", func(t *testing.T) {
+		t.Parallel()
+		l := New[int]()
+		_, err := l.Get(0)
+		assert.NotNil(t, err)
+		assert.Equal(t, "empty list", err.Error())
+	})
+
+	t.Run("Get first element of non-empty list", func(t *testing.T) {
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		l.InsertAll(instances...)
+		first, err := l.Get(0)
+		assert.Nil(t, err)
+		assert.Equal(t, 10, first)
+		assert.Equal(t, l.len, len(instances))
+	})
+
+	t.Run("Get middle element of non-empty list", func(t *testing.T) {
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		l.InsertAll(instances...)
+		midEle, err := l.Get(2)
+		assert.Nil(t, err)
+		assert.Equal(t, 30, midEle)
+		assert.Equal(t, l.len, len(instances))
+	})
+
+	t.Run("Get last element of non-empty list", func(t *testing.T) {
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		l.InsertAll(instances...)
+		last, err := l.Get(len(instances) - 1)
+		assert.Nil(t, err)
+		assert.Equal(t, 50, last)
+		assert.Equal(t, l.len, len(instances))
+	})
+
+	t.Run("Get element at index that is out of bounds", func(t *testing.T) {
+		l := New[int]()
+		instances := []int{10, 20, 30, 40, 50}
+		l.InsertAll(instances...)
+		_, err := l.Get(len(instances))
+		assert.NotNil(t, err)
+		assert.Equal(t, "index out of bounds", err.Error())
+	})
+}

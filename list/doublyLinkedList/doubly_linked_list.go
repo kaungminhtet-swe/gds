@@ -177,6 +177,33 @@ func (l *DoublyLinkedList[T]) Back() (T, error) {
 	return l.tail.value, nil
 }
 
+func (l *DoublyLinkedList[T]) Get(index int) (T, error) {
+	if l.isEmpty() {
+		var zero T
+		return zero, errors.New("empty list")
+	}
+
+	if index < 0 || index >= l.len {
+		var zero T
+		return zero, errors.New("index out of bounds")
+	}
+
+	if index == 0 {
+		return l.Front()
+	}
+
+	if index == l.len-1 {
+		return l.Back()
+	}
+
+	head := l.head
+	for ; index > 0; index-- {
+		head = head.next
+	}
+
+	return head.value, nil
+}
+
 func (l *DoublyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
 }
