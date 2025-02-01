@@ -1,6 +1,7 @@
 package doublylinkedlist
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -228,4 +229,40 @@ func TestRemoveAt(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Equal(t, "index out of bounds", err.Error())
 	})
+}
+
+func TestFront(t *testing.T) {
+	testcases := []struct {
+		name        string
+		instances   []int
+		result      int
+		expectedErr error
+	}{
+		{
+			"Empty list",
+			[]int{},
+			0,
+			errors.New("empty list"),
+		},
+		{
+			"Non-empty list",
+			[]int{10, 20, 30, 40, 50},
+			10,
+			nil,
+		},
+	}
+
+	for _, tc := range testcases {
+		l := New[int]()
+		l.InsertAll(tc.instances...)
+		first, err := l.Front()
+		assert.Equal(t, tc.result, first)
+		assert.Equal(t, l.len, len(tc.instances))
+
+		if err != nil {
+			assert.Equal(t, tc.expectedErr.Error(), err.Error())
+		} else {
+			assert.Nil(t, err)
+		}
+	}
 }

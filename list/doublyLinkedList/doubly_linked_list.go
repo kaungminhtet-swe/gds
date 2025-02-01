@@ -161,6 +161,14 @@ func (l *DoublyLinkedList[T]) RemoveAt(index int) error {
 	return nil
 }
 
+func (l *DoublyLinkedList[T]) Front() (T, error) {
+	if l.isEmpty() {
+		var zero T
+		return zero, errors.New("empty list")
+	}
+	return l.head.value, nil
+}
+
 func (l *DoublyLinkedList[T]) isEmpty() bool {
 	return l.head == nil && l.tail == nil && l.len == 0
 }
