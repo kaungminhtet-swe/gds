@@ -22,6 +22,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-*Happy coding!*
-
 This repo is currently developing and maintaing while increasingly add the most commonly used data structures.
+
+*Happy coding!*
