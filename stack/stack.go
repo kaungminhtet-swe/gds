@@ -10,8 +10,15 @@ type Stack[T comparable] interface {
 	IsEmpty() bool
 }
 
+type List[T comparable] interface {
+	Len() int
+	Front() (T, error)
+	InsertFront(value T)
+	RemoveFront() error
+}
+
 type stack[T comparable] struct {
-	l *singlyLinkedList.SinglyLinkedList[T]
+	l List[T]
 }
 
 func New[T comparable]() Stack[T] {
