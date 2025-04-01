@@ -24,7 +24,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 *Happy coding!*
 
-=======
-Data structures implemented in go.
-
 This repo is currently developing and maintaing while increasingly add the most commonly used data structures.
