@@ -188,6 +188,7 @@ func (l *SinglyLinkedList[T]) Front() (T, error) {
 		var zero T
 		return zero, errors.New("empty list")
 	}
+
 	return l.head.value, nil
 }
 
