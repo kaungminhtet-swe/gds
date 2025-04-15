@@ -27,9 +27,9 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestInOrderIterator(t *testing.T) {
+func TestTreeInOrderIterator(t *testing.T) {
 	assert.NotNil(t, root, "Root should not be nil")
-	tree := InOrder[int]{root}
+	tree := New(root)
 
 	expected := []int{3, 5, 9, 10, 15, 20, 25}
 
