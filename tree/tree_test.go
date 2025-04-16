@@ -49,3 +49,15 @@ func TestPreOrder(t *testing.T) {
 		assert.Equal(t, expected[i], actual)
 	}
 }
+
+func TestPostOrder(t *testing.T) {
+	assert.NotNil(t, root, "Root should not be nil")
+	tree := New(root)
+	tree.SetTraverser(RecursivePostOrder)
+
+	expected := []int{3, 9, 5, 15, 25, 20, 10}
+
+	for i, actual := range tree.Iterate() {
+		assert.Equal(t, expected[i], actual)
+	}
+}
