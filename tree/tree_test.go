@@ -27,7 +27,7 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestTreeInOrderIterator(t *testing.T) {
+func TestInOrderIterator(t *testing.T) {
 	assert.NotNil(t, root, "Root should not be nil")
 	tree := New(root)
 
