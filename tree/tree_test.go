@@ -27,11 +27,23 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestInOrderIterator(t *testing.T) {
+func TestInOrder(t *testing.T) {
 	assert.NotNil(t, root, "Root should not be nil")
 	tree := New(root)
 
 	expected := []int{3, 5, 9, 10, 15, 20, 25}
+
+	for i, actual := range tree.Iterate() {
+		assert.Equal(t, expected[i], actual)
+	}
+}
+
+func TestPreOrder(t *testing.T) {
+	assert.NotNil(t, root, "Root should not be nil")
+	tree := New(root)
+	tree.SetTraverser(RecursivePreOrder)
+
+	expected := []int{10, 5, 3, 9, 20, 15, 25}
 
 	for i, actual := range tree.Iterate() {
 		assert.Equal(t, expected[i], actual)
