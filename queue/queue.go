@@ -2,7 +2,8 @@ package queue
 
 import (
 	"errors"
-	"github.com/mg-kaung/gds/list/singlyLinkedList"
+
+	"github.com/kmh-io/gds/list/singlyLinkedList"
 )
 
 type Queue[T comparable] interface {

@@ -1,6 +1,6 @@
 package stack
 
-import "github.com/mg-kaung/gds/list/singlyLinkedList"
+import "github.com/kmh-io/gds/list/singlyLinkedList"
 
 type Stack[T comparable] interface {
 	Push(value T)

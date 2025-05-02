@@ -1,9 +1,10 @@
 package tree
 
 type Node[T comparable] struct {
-	value T
-	left  *Node[T]
-	right *Node[T]
+	value  T
+	left   *Node[T]
+	right  *Node[T]
+	height int
 }
 
 func NewNode[T comparable](value T) *Node[T] {

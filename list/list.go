@@ -1,7 +1,7 @@
 package list
 
 import (
-	"github.com/mg-kaung/gds/iterator"
+	"github.com/kmh-io/gds/iterator"
 )
 
 type List[T comparable] interface {
