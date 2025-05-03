@@ -9,7 +9,8 @@ type Node[T comparable] struct {
 
 func NewNode[T comparable](value T) *Node[T] {
 	return &Node[T]{
-		value: value,
+		value:  value,
+		height: 1,
 	}
 }
 
